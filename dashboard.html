@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - PostaGram</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav>
+    <h1>PostaGram</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </nav>
+
+  <div class="dashboard">
+
+    <!-- Profile Card -->
+    <div class="profile-card">
+      <div class="profile-pic-container">
+        <img src="profile.jpg" alt="Profile" class="profile-pic">
+        <label class="camera-icon" onclick=profileUpdate()>
+          📷
+          <input type="file" accept="image/*" hidden>
+        </label>
+      </div>
+      <div class="profile-info">
+        <h2 id="profileName"></h2>
+        <div class="stats">
+          <div><strong id="totalPosts">0</strong><br>Posts</div>
+          <div><strong id="followers">0</strong><br>Followers</div>
+          <div><strong id="following">0</strong><br>Following</div>
+        </div>
+      </div>
+      <button class="btn create-post-btn" id="addPost" onclick="post()">+ Create Post</button>
+    </div>
+
+    <!-- Create Post -->
+
+
+    <!-- Posts List -->
+    <div id="main"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
