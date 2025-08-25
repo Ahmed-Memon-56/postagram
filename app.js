@@ -2,74 +2,142 @@ const supabaseUrl = 'https://uegwqhqnbgtfiutytmcx.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlZ3dxaHFuYmd0Zml1dHl0bWN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwMTI0MjQsImV4cCI6MjA2ODU4ODQyNH0.Oyj5bbNmXbkwpi-lZsoPZxGZ-r9gYj9IR2PCNa3tRAA';
 const client = supabase.createClient(supabaseUrl, supabaseKey);
 
-
 let signup = document.getElementById("signupForm")
 let signin = document.getElementById("signinForm")
-let main= document.getElementById("main")
+let main = document.getElementById("main")
+// let titletext = document.getElementById("title")
+// let description = document.getElementById("description")
 
-// ----------------- SHOW FORMS -----------------
+
 function showSignUp() {
-  signup.classList.remove("hidden");
-  signin.classList.add("hidden");
+  document.getElementById("signupForm").classList.remove("hidden");
+  document.getElementById("signinForm").classList.add("hidden");
 }
+
 
 function showSignIn() {
-  signin.classList.remove("hidden");
-  signup.classList.add("hidden");
+  document.getElementById("signinForm").classList.remove("hidden");
+  document.getElementById("signupForm").classList.add("hidden");
 }
 
-// ----------------- SIGN UP -----------------
+
 async function signUp() {
   const name = document.getElementById("signupName").value;
   const email = document.getElementById("signupEmail").value;
   const password = document.getElementById("signupPassword").value;
 
   const { data, error } = await client.auth.signUp({
-    email,
-    password,
+    email: email,
+    password: password,
     options: {
       data: { full_name: name },
     },
   });
 
   if (error) {
-    toastr.error(error.message, "Signup Failed");
+    Command: toastr["error"]("signup fail", "signup")
+
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": true,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
   } else {
-    toastr.success("Signup successful, please login", "Signup");
-    setTimeout(showSignIn, 2000);
+    Command: toastr["success"]("signup successful", "signup")
+
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    setTimeout(function () {
+      showSignIn();
+    }, 3000);
   }
 }
 
-// ----------------- SIGN IN -----------------
+// --------------------------signin funtion---------------------------------------------------//
 async function signIn() {
   const email = document.getElementById("signinEmail").value;
   const password = document.getElementById("signinPassword").value;
 
   const { data, error } = await client.auth.signInWithPassword({
-    email,
-    password,
+    email: email,
+    password: password,
   });
 
   if (error) {
-    toastr.error(error.message, "Signin Failed");
+    Command: toastr["error"]("signin fail", "signin")
+
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": true,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
   } else {
-    toastr.success("Login successful", "Signin");
+    Command: toastr["success"]("sigin successful", "signin")
+
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
     setTimeout(function () {
       window.location.href = "dashboard.html";
-    }, 2000);
+    }, 3000);
   }
 }
-
-// ----------------- LOGOUT -----------------
-async function logout() {
-  await client.auth.signOut();
-  toastr.success("Logged out successfully");
-  window.location.href = "index.html";
-}
-
-// ----------------- TOGGLE PASSWORD -----------------
 function togglePassword(inputId, icon) {
   const input = document.getElementById(inputId);
+
   if (input.type === "password") {
     input.type = "text";
     icon.classList.remove("fa-eye");
@@ -80,97 +148,106 @@ function togglePassword(inputId, icon) {
     icon.classList.add("fa-eye");
   }
 }
-
-// ----------------- CREATE POST UI -----------------
-function post() {
-  main.innerHTML = `
-    <div class="create-post">
+// --------------------------create post---------------------------------------------------//
+async function post() {
+  main.innerHTML+=`<div class="create-post">
       <h3>Title</h3>
-      <input type="text" id="postTitle" placeholder="Write title here....">
+      <input type="text" id="title" placeholder="Write title here....">
       <h3>Description</h3>
-      <textarea id="postDescription" placeholder="Write your Description here....."></textarea>
-      <input type="file" id="postImage" class="post-pic" accept="image/*">
-      <button onclick="uploadPost()">Post</button>
-    </div>`;
+      <textarea id="description" placeholder="Write your Description here....."></textarea>
+        <input type="file" name="" id="file">
+      <button id="post" onclick="uploadPost()">Post</button>
+    </div>`
 }
+// function uploadPost(){
+//   main.style.display='none'
+// }
 
-// ----------------- UPLOAD POST -----------------
 async function uploadPost() {
-  let title = document.getElementById("postTitle").value;
-  let description = document.getElementById("postDescription").value;
-  let fileInput = document.getElementById("postImage");
-  let imageFile = fileInput.files[0];
+  let titlevalu = document.getElementById("title").value;
+  let descriptionvalu = document.getElementById("description").value;
 
-  const { data: userData } = await client.auth.getUser();
-  let full_name = userData.user?.user_metadata?.full_name || "Anonymous";
+  let imagefile = document.getElementById('file')
 
-  let imageUrl = "";
-  if (imageFile) {
-    const fileName = Date.now() + "-" + imageFile.name;
+  let file = imagefile.files[0]
+  let filename = Date.now() + "-" + file.name
+  console.log(file, filename);
 
-    // 1️⃣ Upload image to Supabase Storage
-    const { error: uploadError } = await client.storage
-      .from("post-images") // bucket name
-      .upload(fileName, imageFile, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+  // const avatarFile = event.target.files[0]
+const { data, error:uploaderror } = await client
+  .storage
+  .from('postimage')
+  .upload(`public/${filename}`, file, {
+    cacheControl: '3600',
+    upsert: false
+  })
 
-    if (uploadError) {
-      toastr.error(uploadError.message, "Image Upload Failed");
-      return;
-    }
-
-    // 2️⃣ Get Public URL (Ye 100% sahi chalega public bucket pe)
-    const { data: publicData } = client
-      .storage
-      .from("post-images")
-      .getPublicUrl(fileName);
-
-    imageUrl = publicData.publicUrl;
+  if (uploaderror) {
+    console.log(uploaderror);
+    
+  }else{
+    console.log("upload image " , data);
+    
   }
 
-  // 3️⃣ Insert post in Supabase table
-  const { error } = await client
-    .from("post")
-    .insert([{ 
-      title, 
-      description, 
-      username: full_name, 
-      image: imageUrl 
-    }]);
+  const { data:fetchimage } = client
+  .storage
+  .from('postimage')
+  .getPublicUrl(`public/${filename}`)
+
+  let imageurldata =  fetchimage.publicUrl
+ console.log(imageurldata);
+ 
+  // console.log(titlevalu , descriptionvalu);
+
+const { error } = await client
+  .from('post')
+  .insert({ title:  titlevalu , description: descriptionvalu , imageurl:imageurldata })
 
   if (error) {
-    toastr.error(error.message, "Post Failed");
-  } else {
-    toastr.success("Post uploaded successfully", "Post");
-    loadPosts();
+    console.log(error);
+    
+  }else{
+    console.log("sucess upload");
+    
   }
+
 }
 
 
-// ----------------- LOAD POSTS -----------------
-async function loadPosts() {
+async function adminshowpost() {
+
+  
+
   const { data, error } = await client
-    .from("post")
-    .select("*")
-    .order("id", { ascending: false });
+  .from('post')
+  .select()
 
   if (error) {
-    console.log("Error loading posts: ", error.message);
-    return;
+    console.log(error);
+    
+  }else{
+    console.log(data);
+    
+    main.innerHTML = ""
+
+    data.forEach(postitem => {
+      // let imageurl = postitem.imageurldata
+      // console.log(imageurl);
+      
+       main.innerHTML += `
+         <img src="${postitem.imageurl}" alt="">
+       <h1>${postitem.title}</h1>
+       <p>${postitem.description}</p>
+       `
+    });
   }
-
-  main.innerHTML = "";
-  data.forEach(post => {
-    main.innerHTML += `
-      <div class="post-card">
-        <h3>${post.title}</h3>
-        <p>${post.description}</p>
-        ${post.image ? `<img src="${post.image}" style="max-width:200px;">` : ""}
-        <small>Posted by: <b>${post.username}</b></small>
-      </div>`;
-  });
 }
+adminshowpost()
 
 
+
+
+
+
+ 
